@@ -26,7 +26,7 @@ const People = [
 
 const PeopleShowcase = () => {
   return (
-    <div className='flex flex-col items-center justify-center bg-gradient-to-r from-sky-50 via-slate-50 to-violet-50 pt-10 border-t-2 border-neutral-700'>
+    <div className='flex flex-col items-center justify-center bg-gradient-to-r from-sky-50 via-slate-50 to-violet-50 pt-10 border-t- border-neutral-700'>
         <div className='border-4 border-neutral-700 justify-start px-10 -skew-x-[20deg] bg-black text-white'>
             <h1 className={cn('text-xl sm:text-2xl md:text-3xl lg:text-4xl  font-semibold py-6 skew-x-[20deg]',poppins.className )}>Dead Men tell some Tales!!</h1>
         </div>

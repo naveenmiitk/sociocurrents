@@ -40,6 +40,28 @@ export interface Post {
     minutesRead : string, 
 }
 
+export interface answerWriting {
+    title? : string,
+    slug  : Slug,
+    details : string,
+    body : PortableTextBlock[],
+    _createdAt: string,
+    _updatedAt : string,
+    _id: string,
+    _type: 'answerWriting'
+}
+
+export interface notes {
+    title? : string,
+    slug  : Slug,
+    details : string,
+    body : PortableTextBlock[],
+    _createdAt: string,
+    _updatedAt : string,
+    _id: string,
+    _type: 'notes'
+}
+
 export interface user {
     name : string, 
     email : string, 

@@ -9,6 +9,15 @@ import { poppins } from "../../layout";
 import PortTextEditor from "@/components/PostEditor/PortTextEditor";
 import { redirect } from "next/dist/server/api-utils";
 import { notFound } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import YoutubeCard1 from "@/components/PostEditor/YoutubeCard";
 
 type Props = {
   params: {
@@ -23,18 +32,16 @@ export async function generateStaticParams() {
   *[_type =='answerWriting']{
   slug
   }| order(_createdAt desc)[0...10]
-  `
+  `;
   const allposts = await client.fetch(query);
   // console.log(allposts);
 
-  return allposts.map((post : any) => ({
-      slug: post.slug.current,
-    }))
-  
+  return allposts.map((post: any) => ({
+    slug: post.slug.current,
+  }));
 }
 
-
-export async function generateMetadata ({ params: { slug } }: Props) {
+export async function generateMetadata({ params: { slug } }: Props) {
   const query = groq`
   *[_type == 'answerWriting' && slug.current ==$slug][0]
     {
@@ -42,15 +49,14 @@ export async function generateMetadata ({ params: { slug } }: Props) {
     }
     `;
   const title = await client.fetch(query, { slug: slug });
-    if(!title)
+  if (!title)
     return {
-      notFound : true, 
-    }
+      notFound: true,
+    };
 
   return {
-    title : title?.title, 
-  }
-
+    title: title?.title,
+  };
 }
 
 const AnswerWritingPageIndividual = async ({ params: { slug } }: Props) => {
@@ -66,101 +72,32 @@ const AnswerWritingPageIndividual = async ({ params: { slug } }: Props) => {
   // console.log('slugs',slug);
   // console.log('post in individual post',post);
 
-    if(!post)
-    notFound();
+  if (!post) notFound();
 
   return (
-    <div className="max-w-6xl mx-auto pl-4 sm:pl-10 pr-4 sm:px-8 text-justify">
-      <h1 className="text-2xl md:text-3xl py-6">{post.title}</h1>
-      <PortTextEditor post={post}/>
+    <div className="pl-4 sm:pl-10 pr-4 sm:px-8 min-h-[60vh] w-[100vw] lg:mx-4 flex flex-col lg:flex-row">
+      <div className="px-6 lg:px-10 mb-10 lg:pb-10 lg:border-r border-neutral-200 lg:w-[60vw] mx-auto ">
+        <h1 className="text-xl md:text-2xl py-6">{post.title}</h1>
+        <div className="my-4 mb-16 ">
+          <PortTextEditor post={post} />
+        </div>
+      </div>
 
-      {/* <PortableText
-        content={post.body}
-        projectId={process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}
-        dataset={process.env.NEXT_PUBLIC_SANITY_DATASET}
-        className="text-justify mb-20"
-        serializers={{
-          h1: ({ children }: any) => (
-            <h1 className="text-2xl py-5 font-bold text-red-800">{children}</h1>
-          ),
-          h2: (props: any) => (
-            <h2
-              className="text-red-500 font-bold text-2xl font-serif py-5"
-              {...props}
-            />
-          ),
-          // ul:({children}:any) => (
-          //     <span className='inline'>
-          //     <li className="list-disc"> {children}</li>
-          //     </span>
-          // ),
-          // ol:({children}:any) => (
-          //     <span className='inline'>
-          //     <li className="list-decimal"> {children}</li>
-          //     </span>
-          // ),
-          li: ({ children }: any) => (
-            <span className="my-2">
-              <li className="list-decimal ml-6 px-2 md:ml-10 mb-1 text-[16px] md:text-[18px]">
-                {children}
-              </li>
-            </span>
-          ),
-          h3: ({ children }: any) => (
-            <h3
-              className={cn(
-                "text-xl py-5 font-semibold text-red-700",
-                poppins.className
-              )}
-            >
-              {children}
-            </h3>
-          ),
-          h4: ({ children }: any) => (
-            <h1 className="text-xl py-5 font-bold text-red-500">{children}</h1>
-          ),
-          blockquote: ({ children }: any) => (
-            <blockquote className="border-l-[#e6141e] border-l-4 pl-5 py-5 my-5">
-              {children}
-            </blockquote>
-          ),
-          normal:({children} : any) =>  (
-            <>
-           {(children.length === 1 && children[0] === '') ?  
-             <br/> : <p className='text-[16px] md:text-[18px]'>{children}</p> }
-            </>
-        ),
-          highlight: ({ children }: any) => (
-            <p className="text-[16px] md:text-[16px] bg-yellow-200 pr-2 pl-1 inline-block">
-              {children}
-            </p>
-          ),
-          strong: ({ children }: any) => (
-            <span className="font-bold py-2 inline">{children}</span>
-          ),
-          link : ({children} : any) => (
-            <p className='text-nowrap underline underline-offset-4 text-red-600 cursor-pointer'>{children}</p>
-         ),
-
-          image: (props: any) => {
-            console.log("props", props);
-            return (
-              <div className="relative my-2 max-h-[500px] max-w-[500px] image-container flex items-center justify-center border-0 border-red-500">
-                <Image
-                  className="object-contain border-0 border-blue-500 image"
-                  src={urlForImage(props.asset._ref)}
-                  alt={props?.alt || post.title || "Socio Currents"}
-                  fill
-                  sizes="(max-width: 768px) 100vw,
-                            (max-width: 1200px) 50vw,
-                            33vw"
-                />
-
+      <div className="flex flex-col lg:space-y-6 h-full lg:w-[30vw] lg:mr-10 lg:px-4 border-0 border-red-500">
+        <div className="">
+          <Card className="m-6 lg:m-0">
+            <CardHeader className="flex items-center justify-center">
+              <CardTitle>Also Watch Video on Youtube</CardTitle>
+              <CardDescription className="">{post.title}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center justify-center ">
+              <div className="border-2 border-neutral-400 rounded-lg p-2 shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f] lg:shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#f00,0_0_15px_#ff0,0_0_30px_#f00]">
+                <YoutubeCard1 link={post.youtubeLink} />
               </div>
-            );
-          },
-        }}
-      /> */}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

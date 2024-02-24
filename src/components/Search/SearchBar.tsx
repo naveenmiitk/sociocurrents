@@ -19,6 +19,7 @@ import { client } from '../../../sanity/lib/client';
 import { searchQueryResults } from './search';
 import SearchResultComponent from './SearchResultComponent';
 import { useDebouncedCallback } from 'use-debounce';
+import { ScrollArea } from '../ui/scroll-area';
 
 
 const SearchBar:React.FC = () => {
@@ -67,20 +68,21 @@ const SearchBar:React.FC = () => {
 
 
       const searchQuery = groq`
-    *[_type in ["post", "answerWriting"] 
+    *[_type in ["post", "answerWriting", "notes"] 
     && (
     title match $queryString + '*' 
     || name match $queryString + '*')
     || description match $queryString + '*'
     || subDescription match $queryString + '*'
     || subCategories[]->title match $queryString + '*'
+    || detatils match $queryString + '*'
     ] 
     | order(publishedAt desc){
-      ...,
-      author->, 
-      categories[]->
+      _type, 
+      slug, 
+      title, 
       
-    }[0...5]
+    }[0...20]
   `;
 
   await handleApiCall(searchQuery, searchString);
@@ -119,49 +121,59 @@ const SearchBar:React.FC = () => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-      <div className="mx-2 border-spacing-1 border-[2px] px-[4px]  py-[2px] border-r-2 border-black flex items-center">
-              <h1 className="ml-2 mr-2">Search</h1>
-            <Search className="w-6 h-5" aria-label='search'/>
-      </div>
+        <div className="mx-2 border-spacing-1 border-[1px] px-[6px] py-[6px]  border-black flex items-center">
+          <h1 className="ml-2 mr-2 flex lg:flex">Search</h1>
+          <Search className="w-6 h-6" aria-label="search" />
+        </div>
       </AlertDialogTrigger>
 
-      <AlertDialogContent asChild className='max-w-[95%] rounded-xl top-1/3 md:top-1/'>
-        <div className='max-w-[100px]! md:max-w-[700px] bg-neutral-100' ref={ref}>
+      <AlertDialogContent
+        asChild
+        className="max-w-[95%] rounded-xl top-1/3 md:top-1/"
+      >
+        <div
+          className="max-w-[100px]! md:max-w-[700px] bg-neutral-100"
+          ref={ref}
+        >
           {/* searchinput  */}
-      <div className="relative flex flex-1 flex-shrink-0 mx-1 " >
-    <label htmlFor="search" className="sr-only">
-      Search
-    </label>
-    <input
-      className="peer block w-full h-11 rounded-lg border-0 border-gray-200 py-[4px] pl-10 text-lg outline-0 placeholder:text-gray-500"
-      placeholder={"Search Posts, Answer Writing "}
-      onChange={(e) => {
-        handleSearch(e.target.value);
-      }}
-      value={searchString}
-    />
-    <SearchIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-  </div>
+          <div className="relative flex flex-1 flex-shrink-0 mx-1 ">
+            <label htmlFor="search" className="sr-only">
+              Search
+            </label>
+            <input
+              className="peer block w-full h-11 rounded-lg border-0 border-gray-200 py-[4px] pl-10 text-lg outline-0 placeholder:text-gray-500"
+              placeholder={"Search Posts, PYQs, Notes"}
+              onChange={(e) => {
+                handleSearch(e.target.value);
+              }}
+              value={searchString}
+            />
+            <SearchIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          </div>
 
-  {/* results */}
+          {/* results */}
 
-  <div>
-    {searchResults.length>0 ? <>
-    <SearchResultComponent data={searchResults}/>
-    </> : <>
-    <div>
-      {typingStart && <h1 className='text-center'>No Result Found!</h1>}
-    </div>
-    </>}
-  </div>
-
-  </div>
-
+          <ScrollArea className='max-h-[400px]'>
+            <div className="">
+              {searchResults.length > 0 ? (
+                <>
+                  <SearchResultComponent data={searchResults} />
+                </>
+              ) : (
+                <>
+                  <div>
+                    {typingStart && (
+                      <h1 className="text-center">No Result Found!</h1>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </ScrollArea>
+        </div>
       </AlertDialogContent>
-
     </AlertDialog>
-    
-  )
+  );
 }
 
 

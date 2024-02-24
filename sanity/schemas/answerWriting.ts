@@ -20,6 +20,16 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'details',
+      title: 'Details(Mention : YEAR/Paper1/TopicNo./QNo. Ex: 2022/Paper1/3.2/5)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'youtubeLink',
+      title : 'Youtube-Link',
+      type: 'string',
+    }),
+    defineField({
       name: 'publishedAt',
       title: 'Published at',
       type: 'datetime',

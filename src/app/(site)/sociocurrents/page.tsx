@@ -20,7 +20,7 @@ export async function generateStaticParams() {
         *[_type =='post' && $type in subCategories[]->title 
         ]{
           ..., 
-        }| order(_createdAt desc)[0...5]
+        }| order(_createdAt desc)[0...20]
         `
   const posts = await client.fetch(query,{type : 'Current Affairs'}).then((res) => res.json())
  
@@ -41,7 +41,7 @@ const SocioCurrentsHomePage = async ({
 
   const filter = searchParams?.filter || 'default';
   
-  if(!['default', 'paper1', 'paper2'].includes(filter)){
+  if(!['default', 'paper1', 'paper2'].includes(filter.toLowerCase())){
     return notFound();
   }
 
@@ -75,7 +75,7 @@ const SocioCurrentsHomePage = async ({
   `;
 
   const totalPost = (await client.fetch(queryCountTotalPost, {type : 'Current Affairs' , filter : internalFilter.get(filter)}));
-  const postPerPage:number = 5;
+  const postPerPage:number = 20;
   const totalPages:number = Math.ceil(Number(totalPost)/postPerPage);
 
   if(Number(currentPage) > totalPages) {
@@ -87,7 +87,7 @@ const SocioCurrentsHomePage = async ({
         *[_type =='post' && $type in subCategories[]->title && $filter in subCategories[]->title
         ]{
           ..., 
-        }| order(_createdAt desc)[0...5]
+        }| order(_createdAt desc)[0...20]
         `
 
   posts = await client.fetch(query,{type : 'Current Affairs', filter : internalFilter.get(filter)});
@@ -117,7 +117,7 @@ const SocioCurrentsHomePage = async ({
       && _createdAt < $lastCreatedAt
       ]{
         ..., 
-      }| order(_createdAt desc)[0...5]
+      }| order(_createdAt desc)[0...20]
       `
      posts = await client.fetch(query, {type : 'Current Affairs', filter : internalFilter.get(filter), lastCreatedAt : lastCreatedAt});
 

@@ -59,6 +59,9 @@ const PortTextEditor:React.FC<PortTextEditorProps> = ({post}) => {
             return blank ?
               <a href={href} target="_blank" rel="noopener" className='text-blue-600 underline underline-offset-4'>{children}</a>
               : <a href={href} className='text-red-500 underline underline-offset-4' target="_blank" rel="noopener">{children}</a>
+          }, 
+          highlight : ({children} : any) => {
+            return <h1 className='bg-yellow-400/80 inline'>{children}</h1>
           }
         },
         block : {
