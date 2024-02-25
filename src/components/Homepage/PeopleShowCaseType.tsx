@@ -7,7 +7,6 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { anton, caveat, poppins, satisfy } from "@/app/(site)/layout";
 import { TypewriterEffect } from "../Custom/TypeWritterEffect";
-import { GridBackground } from "../Custom/Grid";
 
 const People = [
   {

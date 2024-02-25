@@ -55,13 +55,9 @@ const AnswerWritingPage1 = async ({
      const data1 = sortDataBasedOnKey(allposts, filter.toLowerCase());
      const data = sortDataBasedOnKey(data1, "question");
 
-    //  console.log('after sorting:');
-    //  data.map((value) => console.log(value.details));
-
-    // console.log(JSON.stringify(topicsPaper2));
   return (
     <div>
-      {/* <QuoteCard/> */}
+
       <div className="bg-white min-h-[150px] flex items-center justify-center mb-10 ">
         <div className="-skew-x-[20deg] border-4 border-neutral-700 px-4 mx-10 lg:px-10 bg-black text-white">
           <h1

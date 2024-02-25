@@ -1,20 +1,15 @@
 import Banner from "@/components/Banner/Banner";
-import { Button } from "@/components/ui/button";
 import { groq } from "next-sanity";
-import Image from "next/image";
 import { client } from "../../../sanity/lib/client";
 import TopStory from "@/components/TopStory/TopStory";
 import PostList from "@/components/PostList/PostList";
 import { cn } from "@/lib/utils";
 import { poppins } from "./layout";
-import PeopleShowcase from "@/components/Homepage/PeopleShowcase";
 import Testimonial from "@/components/Homepage/Testimonial";
 import SubFooter from "@/components/Homepage/SubFooter";
 import { Post } from "@/lib/type/type";
-import { GoogleGeminiEffectDemo } from "@/components/Custom/GeminiComponent";
-import MovingKarl from "@/components/Homepage/MovingKarl";
 import PeopleShowcaseType from "@/components/Homepage/PeopleShowCaseType";
-import { GridBackground } from "@/components/Custom/Grid";
+
 
 const query = groq`
 *[_type =='post']{

@@ -27,7 +27,7 @@ const query = groq`
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: "PYQP (Paper-2) | Sociology Optional UPSC",
+  title: "PYQP | Sociology Optional UPSC",
   description:
     "Get Updated Currents Affairs For Your UPSC CSE Preperation with Sociocurrents",
 };
